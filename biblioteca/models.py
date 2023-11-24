@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 # Create your models here.
 '''
@@ -17,13 +18,30 @@ class Usuario(AbstractUser):
     direccion = models.TextField()
     telefono = models.IntegerField()
 
+class Autor(models.Model):
+    nombre = models.CharField(max_length=100)
+    biografia = models.TextField()
+    #foto = models.ImageField(upload_to='autores/', null=True, blank=True) #Necesita Pillow
+
+    def __str__(self):
+        return self.nombre
+
+class Editorial(models.Model):
+    nombre = models.CharField(max_length=100)
+    direccion = models.TextField(max_length=200)
+    sitio_web = models.URLField()
+
+    def __str__(self):
+        return self.nombre
+
 class Libro(models.Model):
     titulo = models.CharField(max_length=100)
-    autores = models.ManyToManyField('Autor')
-    editorial = models.ForeignKey('Editorial', on_delete=models.CASCADE)
+    autores = models.ManyToManyField(Autor)
+    editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(5)])
     fecha_publicacion = models.DateField()
     
-    #genero tendrá opciones de selección, por ejemplo: novela, ensayo, cuento, etc.
+    #genero tendrá opciones de selección, por ejemplo: novela, cuento, poesía, teatro, otros.
     GENEROS = (
         ('N', 'Novela'),
         ('C', 'Cuento'),
@@ -32,33 +50,32 @@ class Libro(models.Model):
         ('O', 'Otros'),
     )
     genero = models.CharField(max_length=1, choices=GENEROS)
-    isbn = models.IntegerField(max_length=13, unique=True)
+    isbn = models.IntegerField(max_length=13)
     resumen = models.TextField()
+    #portada = models.ImageField(upload_to='portadas/', null=True, blank=True) #Necesita Pillow
 
     DISPONIBILIDAD = (
         ('D', 'Disponible'),
         ('P', 'Prestado'),
+        ('E', 'En proceso de prestamo'),
     )
     disponibilidad = models.CharField(max_length=1, choices=DISPONIBILIDAD)
-    #portada = models.ImageField() #Neceista Pillow
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class Autor(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
-    biografia = models.TextField()
-    #foto = models.ImageField() #Necesita Pillow
-
-class Editorial(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
-    direccion = models.TextField()
-    sitio_web = models.URLField() #default='https://es.wikipedia.org/wiki/'
+    def __str__(self):
+        return self.titulo
 
 class Prestamo(models.Model):
-    libro = models.ForeignKey('Libro', on_delete=models.CASCADE)
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     fecha_prestamo = models.DateField()
-    fecha_devolucion = models.DateField()
-    usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE)
+    fecha_devolucion = models.DateField(null=True, blank=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     ESTADO = (
         ('P', 'Prestado'),
         ('D', 'Devuelto'),
     )
-    estado = models.CharField(max_length=1, choices=ESTADO)
+    estado = models.CharField(max_length=1, choices=ESTADO, default='P')
+
+    def __str__(self):
+        return f"Prestamo de {self.libro} a {self.usuario}"
