@@ -35,7 +35,11 @@
                         <li>Disponibilidad: {{ object.disponibilidad }}</li>
                         <li>Fecha de creación: {{ object.created_date }}</li>
                         <li>Fecha de actualización: {{ object.updated_date }}</li>
-                        <li>Portada: <img src="{{ object.portada }}" alt="Foto {{ object.titulo }}" width="200"></li>
+                        {% if object.portada %}
+                            <li>Portada: <img src="{{ object.portada }}" alt="Foto {{ object.titulo }}" width="200"></li>
+                        {% else %}
+                            <li>Portada: No hay portada</li>
+                        {% endif %}
                     </ul>
                     <a href="{% url 'libro_edit' libro.id %}" class="btn btn-warning">Editar</a>
                     <a href="{% url 'libro_delete' libro.id %}" class="btn btn-danger">Eliminar</a>
