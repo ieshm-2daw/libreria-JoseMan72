@@ -21,7 +21,7 @@ class Usuario(AbstractUser):
 class Autor(models.Model):
     nombre = models.CharField(max_length=100)
     biografia = models.TextField()
-    #foto = models.ImageField(upload_to='autores/', null=True, blank=True) #Necesita Pillow
+    foto = models.ImageField(upload_to='autores/', null=True, blank=True) #Necesita Pillow
 
     def __str__(self):
         return self.nombre
@@ -52,7 +52,7 @@ class Libro(models.Model):
     genero = models.CharField(max_length=1, choices=GENEROS)
     isbn = models.IntegerField(max_length=13)
     resumen = models.TextField()
-    #portada = models.ImageField(upload_to='portadas/', null=True, blank=True) #Necesita Pillow
+    portada = models.ImageField(upload_to='portadas/', null=True, blank=True) #Necesita Pillow
 
     DISPONIBILIDAD = (
         ('D', 'Disponible'),
@@ -75,7 +75,7 @@ class Prestamo(models.Model):
         ('P', 'Prestado'),
         ('D', 'Devuelto'),
     )
-    estado = models.CharField(max_length=1, choices=ESTADO, default='P')
+    estado = models.CharField(max_length=1, choices=ESTADO, default="P")
 
     def __str__(self):
-        return f"Prestamo de {self.libro} a {self.usuario}"
+        return (f"Prestamo de {self.libro} a {self.usuario}")
