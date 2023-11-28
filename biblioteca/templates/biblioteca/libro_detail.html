@@ -25,14 +25,20 @@
                     <hr>
                     <ul>
                         <li>Título: {{ object.titulo }}</li>
-                        <li>Autor: {{ object.autor }}</li>
+                        <li>Autores: {{ object.autores }}</li>
                         <li>Editorial: {{ object.editorial }}</li>
+                        <li>Ratings: {{ object.rating }}</li>
                         <li>Fecha de publicación: {{ object.fecha_publicacion }}</li>
+                        <li>Género: {{ object.genero }}</li>
                         <li>ISBN: {{ object.isbn }}</li>
-                        <li>Portada: {{ object.portada }}</li>
+                        <li>Resumen: {{ object.resumen }}</li>
+                        <li>Disponibilidad: {{ object.disponibilidad }}</li>
+                        <li>Fecha de creación: {{ object.created_date }}</li>
+                        <li>Fecha de actualización: {{ object.updated_date }}</li>
+                        <li>Portada: <img src="{{ object.portada }}" alt="Foto {{ object.titulo }}" width="200"></li>
                     </ul>
-                    <a href="{% url 'libro_edit' %}" class="btn btn-warning">Editar</a>
-                    <a href="{% url 'libro_delete' %}" class="btn btn-danger">Eliminar</a>
+                    <a href="{% url 'libro_edit' libro.id %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'libro_delete' libro.id %}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>
