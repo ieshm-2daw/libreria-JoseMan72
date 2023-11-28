@@ -16,7 +16,7 @@ from django.contrib.auth.models import AbstractUser
 class Usuario(AbstractUser):
     dni = models.CharField(max_length=9, unique=True)
     direccion = models.TextField()
-    telefono = models.IntegerField()
+    telefono = models.IntegerField(null=True)
 
 class Autor(models.Model):
     nombre = models.CharField(max_length=100)
