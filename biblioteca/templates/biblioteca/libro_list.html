@@ -26,7 +26,10 @@
                     <ul>
                         {% for libro in object_list %}
                             <li>
-                                <a href="{% url 'libro_detail' libro.id %}">{{ libro.titulo }}</a>
+                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
+                                {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
+                                {% endif %}
                             </li>
                             {% empty %}
                                 <li>No hay libros</li>

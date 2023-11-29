@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include("biblioteca.urls"))
 ]
+# Para que Django sirva los archivos multimedia, el primer parametro es la URL y el segundo es la ruta del directorio
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

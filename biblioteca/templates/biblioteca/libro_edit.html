@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col">
                     <h1>Editar libro</h1>
-                    <form action="{% url 'libro_edit' libro.id %}" method="post">
+                    <form action="{% url 'libro_edit' pk=libro.pk %}" enctype="multipart/form-data" method="post"> 
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">Guardar</button>

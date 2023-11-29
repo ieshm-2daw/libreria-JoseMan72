@@ -25,7 +25,11 @@
                     <hr>
                     <ul>
                         <li>Título: {{ object.titulo }}</li>
-                        <li>Autores: {{ object.autores }}</li>
+                        <li>Autor/es: 
+                            {% for autor in object.autores.all %}
+                                {{ autor.nombre }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </li>
                         <li>Editorial: {{ object.editorial }}</li>
                         <li>Ratings: {{ object.rating }}</li>
                         <li>Fecha de publicación: {{ object.fecha_publicacion }}</li>
@@ -36,13 +40,13 @@
                         <li>Fecha de creación: {{ object.created_date }}</li>
                         <li>Fecha de actualización: {{ object.updated_date }}</li>
                         {% if object.portada %}
-                            <li>Portada: <img src="/media/{{ object.portada }}" alt="Foto {{ object.titulo }}"></li>
+                            <li>Portada: <img src="{{ object.portada.url }}" alt="Foto {{ object.titulo }}"></li>
                         {% else %}
                             <li>Portada: No hay portada</li>
                         {% endif %}
                     </ul>
-                    <a href="{% url 'libro_edit' libro.id %}" class="btn btn-warning">Editar</a>
-                    <a href="{% url 'libro_delete' libro.id %}" class="btn btn-danger">Eliminar</a>
+                    <a href="{% url 'libro_edit' pk=libro.pk %}" class="btn btn-warning">Editar</a>
+                    <a href="{% url 'libro_delete' pk=libro.pk %}" class="btn btn-danger">Eliminar</a>
                 </div>
             </div>
         </div>

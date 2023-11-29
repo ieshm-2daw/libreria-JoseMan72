@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col">
                     <h1>Borrar libro</h1>
-                    <form action="{% url 'libro_delete' libro.id %}" method="post">
+                    <form action="{% url 'libro_delete' pk=libro.pk %}" method="post">
                         {% csrf_token %}
                         <p>¿Estás seguro de que quieres borrar el libro "{{ libro.titulo }}"?</p>
                         <button type="submit" class="btn btn-danger">Borrar</button>
