@@ -22,9 +22,10 @@
                     <h1>Lista de libros</h1>
                     <hr>
                     <a href="{% url 'libro_create' %}" class="btn btn-primary">Crear libro</a>
+                    <a href="{% url 'prestamo_list' %}" class="btn btn-primary">Prestamos</a>
                     <hr>
                     <ul>
-                        <li>Libros disponibles</li>
+                        <h2>Libros disponibles</h2>
                         {% for libro in libros_disponibles %}
                             <li>
                                 <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
@@ -35,7 +36,7 @@
                         {% empty %}
                             <li>No hay libros</li>
                         {% endfor %}
-                        <li>Libros prestados</li>
+                        <h2>Libros prestados</h2>
                         {% for libro in libros_prestados %}
                             <li>
                                 <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
@@ -46,7 +47,7 @@
                         {% empty %}
                             <li>No hay libros</li>
                         {% endfor %}
-                        <li>Libros en proceso de prestamo</li>
+                        <h2>Libros en proceso de prestamo</h2>
                         {% for libro in libros_en_proceso %}
                             <li>
                                 <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
@@ -57,19 +58,7 @@
                         {% empty %}
                             <li>No hay libros</li>
                         {% endfor %}
-                        <!--
-                        {% for libro in object_list %}
-                            <li>
-                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
-                                {% if libro.portada %}
-                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
-                                {% endif %}
-                            </li>
-                            {% empty %}
-                                <li>No hay libros</li>
-                        {% endfor %}-->
                     </ul>
-
                 </div>
             </div>
         </div>

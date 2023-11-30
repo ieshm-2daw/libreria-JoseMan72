@@ -104,3 +104,13 @@ def libro_loan(request, pk):
         prestamo.save()
         return redirect('libro_list')
 '''
+
+class PrestamosListView(ListView):
+    model = Prestamo
+    template_name = 'biblioteca/prestamo_list.html'
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['prestados'] = Prestamo.objects.filter(estado='P')
+        context['devueltos'] = Prestamo.objects.filter(estado='D')
+        return context
