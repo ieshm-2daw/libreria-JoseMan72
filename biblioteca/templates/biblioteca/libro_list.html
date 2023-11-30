@@ -46,6 +46,17 @@
                         {% empty %}
                             <li>No hay libros</li>
                         {% endfor %}
+                        <li>Libros en proceso de prestamo</li>
+                        {% for libro in libros_en_proceso %}
+                            <li>
+                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
+                                {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li>No hay libros</li>
+                        {% endfor %}
                         <!--
                         {% for libro in object_list %}
                             <li>
