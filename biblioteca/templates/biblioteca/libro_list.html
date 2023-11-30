@@ -24,6 +24,29 @@
                     <a href="{% url 'libro_create' %}" class="btn btn-primary">Crear libro</a>
                     <hr>
                     <ul>
+                        <li>Libros disponibles</li>
+                        {% for libro in libros_disponibles %}
+                            <li>
+                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
+                                {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li>No hay libros</li>
+                        {% endfor %}
+                        <li>Libros prestados</li>
+                        {% for libro in libros_prestados %}
+                            <li>
+                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
+                                {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
+                                {% endif %}
+                            </li>
+                        {% empty %}
+                            <li>No hay libros</li>
+                        {% endfor %}
+                        <!--
                         {% for libro in object_list %}
                             <li>
                                 <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
@@ -33,7 +56,7 @@
                             </li>
                             {% empty %}
                                 <li>No hay libros</li>
-                        {% endfor %}
+                        {% endfor %}-->
                     </ul>
 
                 </div>
