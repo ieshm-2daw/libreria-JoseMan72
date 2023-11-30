@@ -1,12 +1,12 @@
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
+from django.views import View
 from django.urls import reverse_lazy
 from .models import Libro
 
 # Create your views here.
 
-# lista, detalle y modificar
 '''
 class LibroListView(ListView):
     model = Libro
@@ -28,6 +28,7 @@ class LibroListView(ListView):
         context = super().get_context_data(**kwargs)
         context['libros_disponibles'] = Libro.objects.filter(disponibilidad='D')
         context['libros_prestados'] = Libro.objects.filter(disponibilidad='P')
+        
 
         return context
 
@@ -51,3 +52,26 @@ class LibroCreateView(CreateView):
     fields = ['titulo', 'autores', 'editorial', 'rating', 'fecha_publicacion', 'genero', 'isbn', 'resumen', 'portada', 'disponibilidad']
     template_name = 'biblioteca/libro_create.html'
     success_url = reverse_lazy('libro_list')
+
+''' Este funciona pero se puede hacer sin kwargs
+class LibroLoanView(View):
+    def get(self, request, *args, **kwargs):
+        libro = Libro.objects.get(pk=kwargs['pk']) #obtenemos el libro que queremos prestar
+        return render(request, 'biblioteca/libro_loan.html', {'libro': libro})
+    
+    def post(self, request, *args, **kwargs):
+        libro = Libro.objects.get(pk=kwargs['pk'])
+        libro.disponibilidad = 'P' #Cambiamos la disponibilidad del libro a prestado
+        libro.save()
+        return redirect('libro_list') #Redirigimos a la lista de libros
+'''
+class LibroLoanView(View):
+    def get(self, request, pk):
+        libro = Libro.objects.get(id=pk) #dentro del get, pk es el parametro que le pasamos en la url e id es el campo de la base de datos
+        return render(request, 'biblioteca/libro_loan.html', {'libro': libro})
+    
+    def post(self, request, pk):
+        libro = Libro.objects.get(id=pk) #dentro del get, pk es el parametro que le pasamos en la url e id es el campo de la base de datos
+        libro.disponibilidad = 'P' #Cambiamos la disponibilidad del libro a prestado
+        libro.save()
+        return redirect('libro_list') #Redirigimos a la lista de libros

@@ -13,43 +13,43 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
         
-        <title>Detalle de {{ object.titulo }}</title>
+        <title>Prestamo de {{ libro.titulo }}</title>
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>Detalle de libro</h1>
+                    <h1>Detalle de libro que se va a prestar</h1>
                     <hr>
                     <a href="{% url 'libro_list' %}" class="btn btn-primary">Lista de libros</a>
                     <hr>
                     <ul>
-                        <li>Título: {{ object.titulo }}</li>
+                        <li>Título: {{ libro.titulo }}</li>
                         <li>Autor/es: 
-                            {% for autor in object.autores.all %}
-                                {{ autor.nombre }}{% if not forloop.last %}, {% endif %}
+                            {% for autor in libro.autores.all %}
+                                {{ autor.nombre }}{% if not forloop.last %}, {% endif %} <!--forloop.last es una variable que indica si es el último elemento del bucle-->
                             {% endfor %}
                         </li>
-                        <li>Editorial: {{ object.editorial }}</li>
-                        <li>Ratings: {{ object.rating }}</li>
-                        <li>Fecha de publicación: {{ object.fecha_publicacion }}</li>
-                        <li>Género: {{ object.genero }}</li>
-                        <li>ISBN: {{ object.isbn }}</li>
-                        <li>Resumen: {{ object.resumen }}</li>
-                        <li>Disponibilidad: {{ object.disponibilidad }}</li>
-                        <li>Fecha de creación: {{ object.created_date }}</li>
-                        <li>Fecha de actualización: {{ object.updated_date }}</li>
-                        {% if object.portada %}
-                            <li>Portada: <img src="{{ object.portada.url }}" alt="Foto {{ object.titulo }}"></li>
+                        <li>Editorial: {{ libro.editorial }}</li>
+                        <li>Ratings: {{ libro.rating }}</li>
+                        <li>Fecha de publicación: {{ libro.fecha_publicacion }}</li>
+                        <li>Género: {{ libro.genero }}</li>
+                        <li>ISBN: {{ libro.isbn }}</li>
+                        <li>Resumen: {{ libro.resumen }}</li>
+                        <li>Disponibilidad: {{ libro.disponibilidad }}</li>
+                        <li>Fecha de creación: {{ libro.created_date }}</li>
+                        <li>Fecha de actualización: {{ libro.updated_date }}</li>
+                        {% if libro.portada %}
+                            <li>Portada: <img src="{{ libro.portada.url }}" alt="Foto {{ libro.titulo }}"></li>
                         {% else %}
                             <li>Portada: No hay portada</li>
                         {% endif %}
                     </ul>
-                    {% if object.disponibilidad == 'D' %}
-                        <a href="{% url 'libro_loan' pk=libro.pk %}" class="btn btn-success">Prestar</a>
-                    {% endif %}
-                    <a href="{% url 'libro_edit' pk=libro.pk %}" class="btn btn-warning">Editar</a>
-                    <a href="{% url 'libro_delete' pk=libro.pk %}" class="btn btn-danger">Eliminar</a>
+                    <hr>
+                    <form action="{% url 'libro_loan' libro.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Confirmar prestamo" class="btn btn-primary">
+                    </form>
                 </div>
             </div>
         </div>
