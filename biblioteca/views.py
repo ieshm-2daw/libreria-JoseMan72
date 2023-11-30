@@ -1,9 +1,10 @@
+import datetime
 from typing import Any
 from django.shortcuts import redirect, render
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from django.views import View
 from django.urls import reverse_lazy
-from .models import Libro
+from .models import Libro, Prestamo
 
 # Create your views here.
 
@@ -74,4 +75,32 @@ class LibroLoanView(View):
         libro = Libro.objects.get(id=pk) #dentro del get, pk es el parametro que le pasamos en la url e id es el campo de la base de datos
         libro.disponibilidad = 'P' #Cambiamos la disponibilidad del libro a prestado
         libro.save()
+
+        #Se crea un nuevo prestamo
+        prestamo = Prestamo()
+        prestamo.libro = libro
+        prestamo.fecha_prestamo = datetime.datetime.now()
+        prestamo.usuario = request.user
+        prestamo.estado = 'P'
+        prestamo.save()
         return redirect('libro_list') #Redirigimos a la lista de libros
+
+''' Lo mismo pero con funciones
+def libro_loan(request, pk):
+    if request.method == 'GET':
+        libro = Libro.objects.get(id=pk)
+        return render(request, 'biblioteca/libro_loan.html', {'libro': libro})
+    elif request.method == 'POST':
+        libro = Libro.objects.get(id=pk)
+        libro.disponibilidad = 'P'
+        libro.save()
+        
+        #Se crea un nuevo prestamo
+        prestamo = Prestamo()
+        prestamo.libro = libro
+        prestamo.fecha_prestamo = datetime.now()
+        prestamo.usuario = request.user
+        prestamo.estado = 'P'
+        prestamo.save()
+        return redirect('libro_list')
+'''

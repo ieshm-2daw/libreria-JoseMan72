@@ -45,6 +45,7 @@
                             <li>Portada: No hay portada</li>
                         {% endif %}
                     </ul>
+                    <hr>
                     {% if object.disponibilidad == 'D' %}
                         <a href="{% url 'libro_loan' pk=libro.pk %}" class="btn btn-success">Prestar</a>
                     {% endif %}
