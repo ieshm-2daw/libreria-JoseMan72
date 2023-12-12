@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="author" content="José Manuel Bonilla García">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        
+        <!-- Bootstrap Links -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+        
+        <title>Devolver libro</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>Libro a devolver</h1>
+                    <hr>
+                    <a href="{% url 'mislibros_list' %}" class="btn btn-primary">Volver al listado</a>
+                    <hr>
+                    <ul>
+                        <li>Título: {{ prestamo.libro.titulo }}</li>
+                        <li>Autor/es: 
+                            {% for autor in prestamo.libro.autores.all %}
+                                {{ autor.nombre }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </li>
+                        <li>Editorial: {{ prestamo.libro.editorial }}</li>
+                        <li>Ratings: {{ prestamo.libro.rating }}</li>
+                        <li>Fecha de publicación: {{ prestamo.libro.fecha_publicacion }}</li>
+                        <li>Género: {{ prestamo.libro.genero }}</li>
+                        <li>ISBM: {{ prestamo.libro.isbm }}</li>
+                        <li>Resumen: {{ prestamo.libro.resumen }}</li>
+                        <li>Fecha de creación: {{ prestamo.libro.created_date }}</li>
+                        <li>Fecha de actualización: {{ prestamo.libro.updated_date }}</li>
+                        {% if prestamo.libro.portada %}
+                            <li>Portada: <img src="{{ prestamo.libro.portada.url }}" alt="Portada de {{ prestamo.libro.titulo }}" width="100px"></li>
+                        {% else %}
+                            <li>Portada: No hay portada</li>
+                        {% endif %}
+                        <li>Fecha de préstamo: {{ prestamo.fecha_prestamo }}</li>
+                    </ul>
+                    <hr>
+                    <form action="{% url 'return_book' prestamo.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="Confirmar devolución" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </body>
+</html>

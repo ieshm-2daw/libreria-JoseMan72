@@ -22,12 +22,14 @@
                     <h1>Mis libros</h1>
                     <hr>
                     <a href="{% url 'libro_list' %}" class="btn btn-primary">Volver al listado</a>
+                    <hr>
                     <h2>Prestados</h2>
                     <ul>
                     {% for prestado in prestados %}
                         <li>
                             <a href="{% url 'libro_detail' prestado.id %}">{{ prestado.libro.titulo }}</a>
                             <img src="{{ prestado.libro.portada.url }}" alt="{{ prestado.libro.titulo }}" width="100">
+                            <a href="{% url 'return_book' prestado.id %}" class="btn btn-warning">Devolver</a>
                         </li>
                     {% endfor %}
                     </ul>

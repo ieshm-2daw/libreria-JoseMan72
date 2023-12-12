@@ -124,3 +124,19 @@ class MisLibroListView(ListView):
         context['prestados'] = Prestamo.objects.filter(estado='P', usuario=self.request.user)
         context['devueltos'] = Prestamo.objects.filter(estado='D', usuario=self.request.user)
         return context
+
+class ReturnBookView(View):
+    def get(self, request, pk):
+        prestamo = Prestamo.objects.get(id=pk)
+        return render(request, 'biblioteca/return_book.html', {'prestamo': prestamo})
+    
+    def post(self, request, pk):
+        prestamo = Prestamo.objects.get(id=pk)
+        prestamo.estado = 'D'
+        prestamo.fecha_devolucion = datetime.datetime.now()
+        prestamo.save()
+
+        libro = prestamo.libro
+        libro.disponibilidad = 'D'
+        libro.save()
+        return redirect('mislibros_list')
