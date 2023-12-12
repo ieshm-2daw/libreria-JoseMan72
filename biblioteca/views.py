@@ -105,7 +105,7 @@ def libro_loan(request, pk):
         return redirect('libro_list')
 '''
 
-class PrestamosListView(ListView):
+class PrestamosListView(ListView): #Lista de prestamos el cual no es necesario
     model = Prestamo
     template_name = 'biblioteca/prestamo_list.html'
 
@@ -113,4 +113,14 @@ class PrestamosListView(ListView):
         context = super().get_context_data(**kwargs)
         context['prestados'] = Prestamo.objects.filter(estado='P')
         context['devueltos'] = Prestamo.objects.filter(estado='D')
+        return context
+
+class MisLibroListView(ListView):
+    model = Prestamo
+    template_name = 'biblioteca/mislibros_list.html'
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['prestados'] = Prestamo.objects.filter(estado='P', usuario=self.request.user)
+        context['devueltos'] = Prestamo.objects.filter(estado='D', usuario=self.request.user)
         return context
