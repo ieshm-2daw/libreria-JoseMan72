@@ -38,8 +38,9 @@
                     <ul>
                     {% for devuelto in devueltos %}
                         <li>
-                            <a href="{% url 'libro_detail' devuelto.id %}">{{ devuelto.lirbo.titulo }}</a>
+                            <a href="{% url 'libro_detail' devuelto.libro.id %}">{{ devuelto.libro.titulo }}</a>
                             <img src="{{ devuelto.libro.portada.url }}" alt="{{ devuelto.libro.titulo }}" width="100">
+                            <p>Devuelto el {{ devuelto.fecha_devolucion }}</p>
                         </li>
                     {% endfor %}
                     </ul>

@@ -80,6 +80,7 @@ class LibroLoanView(View):
         prestamo = Prestamo()
         prestamo.libro = libro
         prestamo.fecha_prestamo = datetime.datetime.now()
+        #prestamo.fecha_prestamo = fecha_prestamo + timedelta(days=15)
         prestamo.usuario = request.user
         prestamo.estado = 'P'
         prestamo.save()
