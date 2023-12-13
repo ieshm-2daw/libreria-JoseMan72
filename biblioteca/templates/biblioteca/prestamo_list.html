@@ -27,11 +27,19 @@
                     <ul>
                         <h2>Prestados</h2>
                         {% for prestado in prestados %}
-                            <a href="{% url 'libro_detail' prestado.id %}"><li>{{ prestado.libro.titulo }}</li></a>
+                            <li>
+                                <a href="{% url 'libro_detail' prestado.id %}">{{ prestado.libro.titulo }}</a>
+                                <img src="{{ prestado.libro.portada.url }}" alt="{{ prestado.libro.titulo }}" width="100">
+                                <a href="{% url 'return_book' prestado.id %}" class="btn btn-warning">Devolver</a>
+                            </li>
                         {% endfor %}
                         <h2>Devueltos</h2>
                         {% for devuelto in devueltos %}
-                            <a href="{% url 'libro_detail' devuelto.id %}"><li>{{ devuelto.lirbo.titulo }}</li></a>
+                            <li>
+                                <a href="{% url 'libro_detail' devuelto.libro.id %}">{{ devuelto.libro.titulo }}</a>
+                                <img src="{{ devuelto.libro.portada.url }}" alt="{{ devuelto.libro.titulo }}" width="100">
+                                <p>Devuelto el {{ devuelto.fecha_devolucion }}</p>
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>
