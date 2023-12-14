@@ -153,6 +153,16 @@ class MoreLoansListView(View):
             for prestamo in prestamos:
                 if prestamo.usuario.username not in usuarios:
                     usuarios.append(prestamo.usuario.username)
+            
+            #Añadimos el numero de prestado de ese libro a ese usuario, de forma que cambia de 'joseman7' a 'joseman7 (2)'
+            for usuario in usuarios:
+                contador = 0
+                for prestamo in prestamos:
+                    if prestamo.usuario.username == usuario:
+                        contador += 1
+                if contador > 1:
+                    usuarios[usuarios.index(usuario)] = usuario + ' (' + str(contador) + ')'
+            
             #Añadimos a la lista el libro, el numero de prestamos y los usuarios
             lista_mas_prestados.append([libro, len(prestamos), usuarios])
         lista_mas_prestados.sort(key=lambda x: x[1], reverse=True) #Ordenamos la lista de mayor a menor por el numero de prestamos
