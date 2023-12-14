@@ -39,7 +39,13 @@
                                 {% if lista.2.count == 0 %}
                                     <td>Aún sin prestamos</td>
                                 {% else %}
-                                    <td>{{ lista.2.0 }}</td>
+                                    <td>
+                                        {% for usuario in lista.2 %}
+                                            {{ usuario }}
+                                            {% if not forloop.last %}
+                                                ,
+                                            {% endif %}
+                                        {% endfor %}
                                 {% endif %}
                             </tr>
                             {% endfor %}

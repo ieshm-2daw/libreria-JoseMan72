@@ -149,7 +149,10 @@ class MoreLoansListView(View):
         for libro in libros:
             prestamos = Prestamo.objects.filter(libro=libro) #Obtenemos los prestamos de ese libro
             #Obtenemos los usuarios a los que se les ha prestado ese libro, dentro de prestamos tenemos el campo usuario que es el que nos interesa
-            usuarios = prestamos.values_list('usuario__username', flat=True).distinct #flat=True para que nos devuelva una lista de strings y no una lista de tuplas
+            usuarios = []
+            for prestamo in prestamos:
+                if prestamo.usuario.username not in usuarios:
+                    usuarios.append(prestamo.usuario.username)
             #Añadimos a la lista el libro, el numero de prestamos y los usuarios
             lista_mas_prestados.append([libro, len(prestamos), usuarios])
         lista_mas_prestados.sort(key=lambda x: x[1], reverse=True) #Ordenamos la lista de mayor a menor por el numero de prestamos
