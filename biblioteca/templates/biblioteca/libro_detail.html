@@ -37,8 +37,8 @@
                         <li>ISBN: {{ object.isbn }}</li>
                         <li>Resumen: {{ object.resumen }}</li>
                         <li>Disponibilidad: {{ object.disponibilidad }}</li>
-                        <li>Fecha de creación: {{ object.created_date }}</li>
-                        <li>Fecha de actualización: {{ object.updated_date }}</li>
+                        <li>Fecha de creación: {{ object.created_at }}</li>
+                        <li>Fecha de actualización: {{ object.updated_at }}</li>
                         {% if object.portada %}
                             <li>Portada: <img src="{{ object.portada.url }}" alt="Foto {{ object.titulo }}"></li>
                         {% else %}

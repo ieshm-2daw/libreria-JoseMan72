@@ -36,7 +36,11 @@
                                 <td><img src="{{ lista.0.portada.url }}" alt="{{ lista.0.titulo }}" width="100px"></td>
                                 <td><a href="{% url 'libro_detail' lista.0.id %}">{{ lista.0.titulo }}</a></td>
                                 <td>{{ lista.1 }}</td>
-                                <td>{{ lista.2.0 }}</td>
+                                {% if lista.2.count == 0 %}
+                                    <td>Aún sin prestamos</td>
+                                {% else %}
+                                    <td>{{ lista.2.0 }}</td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
