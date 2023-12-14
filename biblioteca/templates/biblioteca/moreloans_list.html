@@ -13,35 +13,35 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
         
-        <title>Lista</title>
+        <title>Mas Prestados</title>
     </head>
     <body>
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>Lista de Prestamos</h1>
-                    <hr>
-                    <a href="{% url 'libro_create' %}" class="btn btn-primary">Crear libro</a>
-                    <a href="{% url 'libro_list' %}" class="btn btn-primary">Lista de libros</a>
-                    <hr>
-                    <ul>
-                        <h2>Prestados</h2>
-                        {% for prestado in prestados %}
-                            <li>
-                                <a href="{% url 'libro_detail' prestado.id %}">{{ prestado.libro.titulo }}</a>
-                                <img src="{{ prestado.libro.portada.url }}" alt="{{ prestado.libro.titulo }}" width="100">
-                                <a href="{% url 'return_book' prestado.id %}" class="btn btn-warning">Devolver</a>
-                            </li>
-                        {% endfor %}
-                        <h2>Devueltos</h2>
-                        {% for devuelto in devueltos %}
-                            <li>
-                                <a href="{% url 'libro_detail' devuelto.libro.id %}">{{ devuelto.libro.titulo }}</a>
-                                <img src="{{ devuelto.libro.portada.url }}" alt="{{ devuelto.libro.titulo }}" width="100">
-                                <p>Devuelto el {{ devuelto.fecha_devolucion }}</p>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <h1>Mas Prestados</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Portada</th>
+                                <th>Libro</th>
+                                <th>Prestamos</th>
+                                <th>Usuarios</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lista in lista_mas_prestados %}
+                            <tr>
+                                <!--Mostrar el primer dato de la fila es el libro y otro td que sea el numero de prestamos que tiene-->
+                                <td><img src="{{ lista.0.portada.url }}" alt="{{ lista.0.titulo }}" width="100px"></td>
+                                <td><a href="{% url 'libro_detail' lista.0.id %}">{{ lista.0.titulo }}</a></td>
+                                <td>{{ lista.1 }}</td>
+                                <td>{{ lista.2.0 }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{% url 'libro_list' %}" class="btn btn-primary">Volver</a>
                 </div>
             </div>
         </div>
