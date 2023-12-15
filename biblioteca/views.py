@@ -168,15 +168,26 @@ class MoreLoansListView(View):
         lista_mas_prestados.sort(key=lambda x: x[1], reverse=True) #Ordenamos la lista de mayor a menor por el numero de prestamos
         return render(request, 'biblioteca/moreloans_list.html', {'lista_mas_prestados': lista_mas_prestados})
 
+''' Panel
+N de libros prestados: 
+N de libros disponibles:
+Libros no devueltos: ( se han pasado de la fecha)
+Libros proximos a devolver: (se acerca la fecha de devolucion, ultima semana)
+Top libros
 '''
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        
+
+class PanelBibliotecarioView(View):
+    def get(self, request):
         libros = Libro.objects.all()
-        libros_mas_prestados = []
+        lista_prestados = 0             #Numero de libros prestados
+        lista_disponibles = 0           #Numero de libros disponibles
+        lista_no_devueltos = Prestamo.objects.filter(estado='P', fecha_devolucion__lt=datetime.datetime.now())       #Libros que se han pasado de la fecha de devolucion
+        lista_proximos_devolver = Prestamo.objects.filter(estado='P',fecha_devolucion__gte=datetime.datetime.now(), fecha_devolucion__lte=(datetime.datetime.now() + datetime.timedelta(days=7)))    #Libros que se acerca la fecha de devolucion (ultima semana)
+
         for libro in libros:
-            prestamos = Prestamo.objects.filter(libro=libro)
-            libros_mas_prestados.append([libro, len(prestamos)])
-        libros_mas_prestados.sort(key=lambda x: x[1], reverse=True)
-        context['libros_mas_prestados'] = libros_mas_prestados
-        return context'''
+            if libro.disponibilidad == 'P':
+                lista_prestados += 1
+            elif libro.disponibilidad == 'D':
+                lista_disponibles += 1
+        
+        return render(request, 'biblioteca/panel.html', {'lista_prestados': lista_prestados, 'lista_disponibles': lista_disponibles, 'lista_no_devueltos': lista_no_devueltos, 'lista_proximos_devolver': lista_proximos_devolver})

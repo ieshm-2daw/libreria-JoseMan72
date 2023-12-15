@@ -1,5 +1,17 @@
 from django.urls import path
-from .views import LibroListView, LibroDetailView, LibroUpdateView, LibroDeleteView, LibroCreateView, LibroLoanView, PrestamosListView, MisLibroListView, ReturnBookView, MoreLoansListView
+from .views import (
+    LibroListView, 
+    LibroDetailView, 
+    LibroUpdateView, 
+    LibroDeleteView, 
+    LibroCreateView, 
+    LibroLoanView, 
+    PrestamosListView, 
+    MisLibroListView, 
+    ReturnBookView, 
+    MoreLoansListView,
+    PanelBibliotecarioView
+    )
 
 urlpatterns = [
     path('',LibroListView.as_view(), name='libro_list'),
@@ -12,4 +24,5 @@ urlpatterns = [
     path('mislibros/', MisLibroListView.as_view(), name='mislibros_list'),
     path('mislibros/return/<int:pk>/', ReturnBookView.as_view(), name='return_book'),
     path('masprestados/', MoreLoansListView.as_view(), name='masprestados_list'),
+    path('panel/', PanelBibliotecarioView.as_view(), name='panel_bibliotecario'),
 ]
