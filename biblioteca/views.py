@@ -191,3 +191,12 @@ class PanelBibliotecarioView(View):
                 lista_disponibles += 1
         
         return render(request, 'biblioteca/panel.html', {'lista_prestados': lista_prestados, 'lista_disponibles': lista_disponibles, 'lista_no_devueltos': lista_no_devueltos, 'lista_proximos_devolver': lista_proximos_devolver})
+
+class FiltrarCategoriaView(ListView):
+    model = Libro
+    template_name = 'biblioteca/filtrar_categoria.html'
+    queryset = Libro.objects.all()
+
+    def get(self, *args: Any, **kwargs: Any):
+        self.queryset = self.queryset.filter(genero=kwargs['categoria'])
+        return super().get(*args, **kwargs)

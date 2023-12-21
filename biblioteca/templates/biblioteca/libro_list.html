@@ -19,14 +19,31 @@
         <div class="container">
             <div class="row">
                 <div class="col">
+                    
                     <h1>Lista de libros</h1>
                     <hr>
-                    <a href="{% url 'admin:index' %}" class="btn btn-primary">Admin</a>
-                    <a href="{% url 'panel_bibliotecario' %}" class="btn btn-primary">Panel</a>
-                    <a href="{% url 'libro_create' %}" class="btn btn-primary">Crear libro</a>
-                    <a href="{% url 'prestamo_list' %}" class="btn btn-primary">Prestamos</a>
-                    <a href="{% url 'mislibros_list' %}" class="btn btn-primary">Mis libros</a>
-                    <a href="{% url 'masprestados_list' %}" class="btn btn-primary">Mas prestados</a>
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="{% url 'admin:index' %}" class="btn btn-primary">Admin</a>
+                            <a href="{% url 'panel_bibliotecario' %}" class="btn btn-primary">Panel</a>
+                            <a href="{% url 'libro_create' %}" class="btn btn-primary">Crear libro</a>
+                            <a href="{% url 'prestamo_list' %}" class="btn btn-primary">Prestamos</a>
+                            <a href="{% url 'mislibros_list' %}" class="btn btn-primary">Mis libros</a>
+                            <a href="{% url 'masprestados_list' %}" class="btn btn-primary">Mas prestados</a>
+                        </div>
+                        <div class="col-6">
+                            <form action="{% url 'filtrar_categoria' %}" method="POST">
+                                {% csrf_token %}
+                                <select name="genero" id="genero">
+                                    <option value="0">Todos</option>
+                                    {% for genero in generos %}
+                                        <option value="{{ genero.pk }}">{{ genero.nombre }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-primary">Filtrar</button>
+                            </form>
+                        </div>
+                    </div>
                     <hr>
                     <ul>
                         <h2>Libros disponibles</h2>
