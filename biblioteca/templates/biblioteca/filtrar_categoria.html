@@ -23,6 +23,11 @@
                     <hr>
                     <a href="{% url 'libro_list' %}" class="btn btn-primary">Volver</a>
                     <hr>
+                    <ul>
+                        {% for libro in object_list %}
+                            <li>{{ libro.titulo }}</li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
         </div>

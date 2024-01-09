@@ -36,9 +36,11 @@
                                 {% csrf_token %}
                                 <select name="genero" id="genero">
                                     <option value="0">Todos</option>
-                                    {% for genero in generos %}
-                                        <option value="{{ genero.pk }}">{{ genero.nombre }}</option>
-                                    {% endfor %}
+                                    <option value="1">Novela</option>
+                                    <option value="2">Cuento</option>
+                                    <option value="3">Poesía</option>
+                                    <option value="4">Teatro</option>
+                                    <option value="5">Otros</option>
                                 </select>
                                 <button type="submit" class="btn btn-primary">Filtrar</button>
                             </form>

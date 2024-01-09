@@ -198,5 +198,13 @@ class FiltrarCategoriaView(ListView):
     queryset = Libro.objects.all()
 
     def get(self, *args: Any, **kwargs: Any):
-        self.queryset = self.queryset.filter(genero=kwargs['categoria'])
+        self.queryset = self.queryset.filter(genero=kwargs['genero'])
         return super().get(*args, **kwargs)
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['genero'] = self.kwargs['genero']
+        return context
+    
+    def get_queryset(self) -> Any:
+        return self.queryset.filter(genero=self.kwargs['genero'])
