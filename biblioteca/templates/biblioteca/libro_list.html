@@ -19,7 +19,6 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    
                     <h1>Lista de libros</h1>
                     <hr>
                     <div class="row">
@@ -32,21 +31,25 @@
                             <a href="{% url 'masprestados_list' %}" class="btn btn-primary">Mas prestados</a>
                         </div>
                         <div class="col-6">
-                            <form action="{% url 'filtrar_categoria' %}" method="POST">
-                                {% csrf_token %}
-                                <select name="genero" id="genero">
-                                    <option value="0">Todos</option>
-                                    <option value="1">Novela</option>
-                                    <option value="2">Cuento</option>
-                                    <option value="3">Poesía</option>
-                                    <option value="4">Teatro</option>
-                                    <option value="5">Otros</option>
+                            <form action="{% url 'libro_list' %}" method="get">
+                                <label for="id_genero">Selecciona un género:</label>
+                                <select id="id_genero" name="genero">
+                                    <option value="">Todos</option>
+                                    <option value="Novela" {% if genero == 'Novela' %}selected{% endif %}>Novela</option>
+                                    <option value="Cuento" {% if genero == 'Cuento' %}selected{% endif %}>Cuento</option>
+                                    <option value="Poesia" {% if genero == 'Poesia' %}selected{% endif %}>Poesia</option>
+                                    <option value="Teatro" {% if genero == 'Teatro' %}selected{% endif %}>Teatro</option>
+                                    <option value="Otros" {% if genero == 'Otros' %}selected{% endif %}>Otros</option>
                                 </select>
                                 <button type="submit" class="btn btn-primary">Filtrar</button>
                             </form>
                         </div>
                     </div>
                     <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
                     <ul>
                         <h2>Libros disponibles</h2>
                         {% for libro in libros_disponibles %}
@@ -80,6 +83,23 @@
                             </li>
                         {% empty %}
                             <li>No hay libros</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-6">
+                    {% if genero == '' %}
+                        <h2>Todos los libros</h2>
+                    {% else %}
+                        <h2>Libros de {{ genero }}</h2>
+                    {% endif %}
+                    <ul>
+                        {% for libro in libros_genero %}
+                            <li>
+                                <a href="{% url 'libro_detail' pk=libro.pk %}">{{ libro.titulo }}</a>
+                                {% if libro.portada %}
+                                <img src="{{ libro.portada.url }}" alt="{{ libro.titulo }}" width="100">
+                                {% endif %}
+                            </li>
                         {% endfor %}
                     </ul>
                 </div>

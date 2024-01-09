@@ -43,13 +43,13 @@ class Libro(models.Model):
     
     #genero tendrá opciones de selección, por ejemplo: novela, cuento, poesía, teatro, otros.
     GENEROS = (
-        ('N', 'Novela'),
-        ('C', 'Cuento'),
-        ('P', 'Poesía'),
-        ('T', 'Teatro'),
-        ('O', 'Otros'),
+        ('Novela', 'Novela'),
+        ('Cuento', 'Cuento'),
+        ('Poesia', 'Poesia'),
+        ('Teatro', 'Teatro'),
+        ('Otros', 'Otros'),
     )
-    genero = models.CharField(max_length=1, choices=GENEROS)
+    genero = models.CharField(max_length=10, choices=GENEROS)
     isbn = models.IntegerField(max_length=13)
     resumen = models.TextField()
     portada = models.ImageField(upload_to='portadas/', null=True, blank=True) #Necesita Pillow

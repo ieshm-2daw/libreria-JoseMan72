@@ -10,8 +10,7 @@ from .views import (
     MisLibroListView, 
     ReturnBookView, 
     MoreLoansListView,
-    PanelBibliotecarioView,
-    FiltrarCategoriaView
+    PanelBibliotecarioView
     )
 
 urlpatterns = [
@@ -26,5 +25,4 @@ urlpatterns = [
     path('mislibros/return/<int:pk>/', ReturnBookView.as_view(), name='return_book'),
     path('masprestados/', MoreLoansListView.as_view(), name='masprestados_list'),
     path('panel/', PanelBibliotecarioView.as_view(), name='panel_bibliotecario'),
-    path('filtrar/', FiltrarCategoriaView.as_view(), name='filtrar_categoria'),
 ]

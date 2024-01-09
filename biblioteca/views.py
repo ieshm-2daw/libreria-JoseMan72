@@ -17,6 +17,7 @@ class LibroListView(ListView):
 class LibroListView(ListView):
     model = Libro
     template_name = 'biblioteca/libro_list.html'
+    context_object_name = 'libros_genero'
 
     #queryset = Libro.objects.filter(disponibilidad='D')
     ''' Otra forma sobrescribiendo el metodo get_queryset
@@ -27,10 +28,20 @@ class LibroListView(ListView):
     #filtrar los libros disponibles y no disponibles
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        genero = self.request.GET.get('genero', '') #Para el filtro de genero
+        context['genero'] = genero
         context['libros_disponibles'] = Libro.objects.filter(disponibilidad='D')
         context['libros_prestados'] = Libro.objects.filter(disponibilidad='P')
         context['libros_en_proceso'] = Libro.objects.filter(disponibilidad='E')
         return context
+
+    def get_queryset(self):
+        queryset = Libro.objects.all()
+        genero = self.request.GET.get('genero')
+
+        if genero:
+            queryset = queryset.filter(genero=genero)
+        return queryset
 
 class LibroDetailView(DetailView):
     model = Libro
@@ -191,20 +202,3 @@ class PanelBibliotecarioView(View):
                 lista_disponibles += 1
         
         return render(request, 'biblioteca/panel.html', {'lista_prestados': lista_prestados, 'lista_disponibles': lista_disponibles, 'lista_no_devueltos': lista_no_devueltos, 'lista_proximos_devolver': lista_proximos_devolver})
-
-class FiltrarCategoriaView(ListView):
-    model = Libro
-    template_name = 'biblioteca/filtrar_categoria.html'
-    queryset = Libro.objects.all()
-
-    def get(self, *args: Any, **kwargs: Any):
-        self.queryset = self.queryset.filter(genero=kwargs['genero'])
-        return super().get(*args, **kwargs)
-    
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context['genero'] = self.kwargs['genero']
-        return context
-    
-    def get_queryset(self) -> Any:
-        return self.queryset.filter(genero=self.kwargs['genero'])
