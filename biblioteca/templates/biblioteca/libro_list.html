@@ -19,7 +19,19 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>Lista de libros</h1>
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-3">
+                            <h1>Lista de libros</h1>
+                        </div>
+                        <div class="col-2">
+                            {% if request.user.is_authenticated %}
+                                <p>Bienvenido, {{ request.user.username }}</p>
+                                <a href="{% url 'logout' %}" class="btn btn-primary">Cerrar sesión</a>
+                            {% else %}
+                                <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+                            {% endif %}
+                        </div>
+                    </div>
                     <hr>
                     <div class="row">
                         <div class="col-6">

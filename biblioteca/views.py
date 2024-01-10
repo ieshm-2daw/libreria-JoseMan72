@@ -5,27 +5,23 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView, C
 from django.views import View
 from django.urls import reverse_lazy
 from .models import Libro, Prestamo
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-'''
-class LibroListView(ListView):
-    model = Libro
-    template_name = 'biblioteca/libro_list.html'
-'''
-# librolistview pero que solo muestre los libros disponibles
 class LibroListView(ListView):
     model = Libro
     template_name = 'biblioteca/libro_list.html'
     context_object_name = 'libros_genero'
 
-    #queryset = Libro.objects.filter(disponibilidad='D')
+    #librolistview pero que solo muestre los libros disponibles
+    #   queryset = Libro.objects.filter(disponibilidad='D')
     ''' Otra forma sobrescribiendo el metodo get_queryset
     def get_queryset(self): #sobreescribimos el metodo get_queryset, que sirve para filtrar los libros disponibles pasandole el parametro 'D'
         return Libro.objects.filter(disponibilidad='D')
     '''
 
-    #filtrar los libros disponibles y no disponibles
+    #filtrar los libros disponibles, no disponibles y en proceso
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         genero = self.request.GET.get('genero', '') #Para el filtro de genero
@@ -43,22 +39,22 @@ class LibroListView(ListView):
             queryset = queryset.filter(genero=genero)
         return queryset
 
-class LibroDetailView(DetailView):
+class LibroDetailView(LoginRequiredMixin, DetailView):
     model = Libro
     template_name = 'biblioteca/libro_detail.html'
 
-class LibroUpdateView(UpdateView):
+class LibroUpdateView(LoginRequiredMixin, UpdateView):
     model = Libro
     fields = ['titulo', 'autores', 'editorial', 'rating', 'fecha_publicacion', 'genero', 'isbn', 'resumen', 'portada', 'disponibilidad']
     template_name = 'biblioteca/libro_edit.html'
     success_url = reverse_lazy('libro_list')
 
-class LibroDeleteView(DeleteView):
+class LibroDeleteView(LoginRequiredMixin, DeleteView):
     model = Libro
     template_name = 'biblioteca/libro_delete.html'
     success_url = reverse_lazy('libro_list')
 
-class LibroCreateView(CreateView):
+class LibroCreateView(LoginRequiredMixin, CreateView):
     model = Libro
     fields = ['titulo', 'autores', 'editorial', 'rating', 'fecha_publicacion', 'genero', 'isbn', 'resumen', 'portada', 'disponibilidad']
     template_name = 'biblioteca/libro_create.html'
@@ -76,7 +72,7 @@ class LibroLoanView(View):
         libro.save()
         return redirect('libro_list') #Redirigimos a la lista de libros
 '''
-class LibroLoanView(View):
+class LibroLoanView(LoginRequiredMixin, View):
     def get(self, request, pk):
         libro = Libro.objects.get(id=pk) #dentro del get, pk es el parametro que le pasamos en la url e id es el campo de la base de datos
         return render(request, 'biblioteca/libro_loan.html', {'libro': libro})
@@ -116,7 +112,7 @@ def libro_loan(request, pk):
         return redirect('libro_list')
 '''
 
-class PrestamosListView(ListView): #Lista de prestamos el cual no es necesario
+class PrestamosListView(LoginRequiredMixin, ListView): #Lista de prestamos el cual no es necesario
     model = Prestamo
     template_name = 'biblioteca/prestamo_list.html'
 
@@ -126,7 +122,7 @@ class PrestamosListView(ListView): #Lista de prestamos el cual no es necesario
         context['devueltos'] = Prestamo.objects.filter(estado='D')
         return context
 
-class MisLibroListView(ListView):
+class MisLibroListView(LoginRequiredMixin, ListView):
     model = Prestamo
     template_name = 'biblioteca/mislibros_list.html'
 
@@ -136,7 +132,7 @@ class MisLibroListView(ListView):
         context['devueltos'] = Prestamo.objects.filter(estado='D', usuario=self.request.user)
         return context
 
-class ReturnBookView(View):
+class ReturnBookView(LoginRequiredMixin, View):
     def get(self, request, pk):
         prestamo = Prestamo.objects.get(id=pk)
         return render(request, 'biblioteca/return_book.html', {'prestamo': prestamo})
@@ -153,7 +149,7 @@ class ReturnBookView(View):
         return redirect('mislibros_list')
 
 #Libros mas prestados
-class MoreLoansListView(View):
+class MoreLoansListView(LoginRequiredMixin, View):
     def get(self, request):
         libros = Libro.objects.all()
         lista_mas_prestados = []
@@ -187,7 +183,7 @@ Libros proximos a devolver: (se acerca la fecha de devolucion, ultima semana)
 Top libros
 '''
 
-class PanelBibliotecarioView(View):
+class PanelBibliotecarioView(LoginRequiredMixin, View):
     def get(self, request):
         libros = Libro.objects.all()
         lista_prestados = 0             #Numero de libros prestados
